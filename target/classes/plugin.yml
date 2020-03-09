@@ -1,0 +1,18 @@
+  name: LinWeChatPlugin             # nukkit运行时识别的插件名
+  main: weixin.lin.mcplugin.PluginMain  # 主类名称
+  version: "0.0.1"              # 版本号
+  author: lin945
+  api: ["1.0.8"]                # 早期nukkit api为1.0.0，
+  # 目前大概为1.0.8
+  description: a WeChat push plugin #介绍
+
+  commands:
+    serverpost:
+      aliases: ["serverpost"]
+      description: server酱推送设置
+      usage: "/serverpost"
+      permission: LinPlugin.serverpost
+  permissions:
+    LinPlugin.serverpost:             # 权限名称
+        description: ""          # 权限的介绍
+        default: op              # 权限限制 op / notop   notop为非op可执行 op 为仅限op执行
