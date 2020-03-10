@@ -4,7 +4,7 @@
 #使用方法：
 * jar文件放plugins中
 * 首先到[sever酱](http://sc.ftqq.com/3.version)登陆获取key和绑定微信
-* 填写配置文件config.yml
+* 填写配置文件config.yml（LinWeChatPlugin文件夹内）
 >#推送标题  
 >title: "服务器监控系统"  
 >#下面是开关打开改为on  
