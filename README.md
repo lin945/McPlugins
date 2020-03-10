@@ -1,4 +1,5 @@
 # McPlugins
+![li945](https://github.com/lin945/McPlugins/blob/master/ico.png?raw=true"li945")  
 微信推送服务器状态
 代码写的烂请不要在意
 #使用方法：
