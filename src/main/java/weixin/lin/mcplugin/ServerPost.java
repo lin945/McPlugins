@@ -4,7 +4,11 @@ import java.io.*;
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
 
+import cn.nukkit.Nukkit;
+import cn.nukkit.Player;
 import cn.nukkit.scheduler.PluginTask;
 
 public class ServerPost extends PluginTask<PluginMain> {
@@ -20,12 +24,13 @@ public class ServerPost extends PluginTask<PluginMain> {
 
     @Override
     public void onRun(int i) {
-        if (System.currentTimeMillis() >= (stt + ours * 1 * 60 * 1000)) {
+        if (System.currentTimeMillis() >= (stt + ours * 60 * 60 * 1000)) {
             stt = System.currentTimeMillis();
             ours = PluginMain.getPlugin().getConfig().getInt("time", 5);
             if (PluginMain.getPlugin().getConfig().getString("status").equals("on")) {
                 getData();
                 send(data);
+                
             }
         }
     }
@@ -35,26 +40,43 @@ public class ServerPost extends PluginTask<PluginMain> {
         data = new StringBuffer();
         data.append("text=" + PluginMain.getPlugin().getConfig().getString("title"));
         data.append("&desp=");
-        data.append("# 欢迎使用微信推送插件\n" +
-                "##如果你觉得好用支持下作者！github：lin945\n" +
-                "## 服务器信息：<br /> <br />");
+        data.append("## 欢迎使用微信推送插件\n" +
+                "##如果你觉得好用支持下作者！[github](https://www.mdeditor.com/)：lin945\n" +
+                "#### 服务器信息：\n");
         Date date = new Date();
-        data.append("[========]<br />");
-        data.append(">服务器时间：" + new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z").format(date));
-        data.append("<br />>服务器Motd："+ PluginMain.getPlugin().getServer().getMotd());
-        data.append("<br />服务器可用最大内存："+runt.maxMemory()/1048576+"M");
-        data.append("\n>服务器使用内存："+runt.totalMemory()/1048576+"M");
-        data.append("\n服务器空闲内存："+runt.freeMemory()/1048576+"M");
-        data.append("\n>服务器可用核心："+runt.availableProcessors());
-        data.append("\n服务器在线玩家：："+PluginMain.getPlugin().getServer().getOnlinePlayers().size());
-        data.append("\n>服务器op："+PluginMain.getPlugin().getServer().getOps().getAll());
+       long between=System.currentTimeMillis()-Nukkit.START_TIME;
+        long day = between / (24 * 60 * 60 * 1000);
+        long hour = (between / (60 * 60 * 1000) - day * 24);
+        long min = ((between / (60 * 1000)) - day * 24 * 60 - hour * 60);
+        long s = (between / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
+        data.append("* 服务器时间：" + new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z").format(date)+"\n");
+       data.append("* 服务器运行时间："+day+"天"+hour+"小时"+min+"分"+s+"秒\n");
+        data.append("* 服务器Motd："+ PluginMain.getPlugin().getServer().getMotd()+"\n");
+        data.append("* 服务器可用最大内存："+runt.maxMemory()/1048576+"M\n");
+        data.append("* 服务器使用内存："+(runt.totalMemory()/1048576-runt.freeMemory()/1048576)+"M"+"\n");
+        data.append("* 服务器空闲内存："+runt.freeMemory()/1048576+"M"+"\n");
+        data.append("* 服务器可用核心："+runt.availableProcessors()+"\n");
+        data.append("* 服务器在线玩家：");
+          Map<UUID,Player> p= PluginMain.getPlugin().getServer().getOnlinePlayers();
+        for (UUID playeruid:p.keySet()) {
+            data.append("* "+p.get(playeruid).getName()+"\n");
+        }
+        data.append("\n");
+        data.append("* 服务器op："+PluginMain.getPlugin().getServer().getOps().getAll()+"\n");
+        data.append("* 服务器tps："+PluginMain.getPlugin().getServer().getTicksPerSecondAverage());
+
     }
 
-    public void send(StringBuffer data) {
+    public int send(StringBuffer data) {
         try {
             PluginMain.getPlugin().getLogger().info("Server酱推送开始");
             PluginMain.getPlugin().getLogger().info(data.toString());
-            URL url = new URL("https://sc.ftqq.com/" + PluginMain.getPlugin().getConfig().getString("key") + ".send?");
+            String key=PluginMain.getPlugin().getConfig().getString("key","erro");
+            if(key.equals("keys")|key.equals("erro")|key.isEmpty()){
+                PluginMain.getPlugin().getLogger().alert("Server酱key设置错误请检查配置");
+               return -1;
+            }
+            URL url = new URL("https://sc.ftqq.com/" +  key+ ".send?");
             try {
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();//创建实例连接指定URL上的内容
                 connection.setRequestMethod("POST");
@@ -83,6 +105,7 @@ public class ServerPost extends PluginTask<PluginMain> {
         } catch (Exception e) {
             PluginMain.getPlugin().getLogger().alert("Server酱推送出错" + e.toString());
         }
+        return 1;
     }
 
 }

@@ -1,7 +1,7 @@
 #推送标题
 title: "服务器监控系统"
 status: off
-#server酱的key获取：http://sc.ftqq.com/
-key:
-#推送周期单位小时
-time: 1
+#server酱的key获取后替换掉下面keys：http://sc.ftqq.com/
+key: keys
+#推送周期单位小时只能整数最小1
+time: 5

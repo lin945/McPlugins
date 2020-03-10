@@ -52,17 +52,31 @@ public class PluginMain extends PluginBase {
                     getConfig().set("key", args[1]);
                     saveConfig();
                     sender.sendMessage("key设置成功！");
-                }else if(args[0].equals("time")&&Integer.parseInt(args[1])>=1&&Integer.parseInt(args[1])<=24){
-                    getConfig().set("time", args[1]);
+                }else if(args[0].equals("time")&&isNumeric(args[1])){
+                    getConfig().set("time", Integer.parseInt(args[1]));
                     saveConfig();
                     sender.sendMessage("推送周期设置成功！");
                 }else  if(args[0].equals("title")){
                     getConfig().set("title", args[1]);
                     saveConfig();
                     sender.sendMessage("推送标题设置成功！");
+                }else {
+                    sender.sendMessage("参数错误");
                 }
             }
         }
         return true;
     }
+    public static boolean isNumeric(String str)
+    {
+        for (int i = 0; i < str.length(); i++)
+        {
+            if (!Character.isDigit(str.charAt(i)))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
