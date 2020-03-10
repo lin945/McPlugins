@@ -18,6 +18,7 @@
 >/serverpost on  打开推送开关  
 >/serverpost off 关闭推送开关  
 >/serverpost time [整数]  设置间隔  
->/serverpost key [key] 设置server酱key 
-
+>/serverpost key [key] 设置server酱key  
+# 推送图  
+![xiaoguo](https://github.com/lin945/McPlugins/blob/master/a.jpg?raw=true"xiaoguo")
 qq：2315554550
