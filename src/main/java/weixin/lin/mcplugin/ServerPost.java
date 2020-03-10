@@ -41,7 +41,7 @@ public class ServerPost extends PluginTask<PluginMain> {
         data.append("text=" + PluginMain.getPlugin().getConfig().getString("title"));
         data.append("&desp=");
         data.append("## 欢迎使用微信推送插件\n" +
-                "##如果你觉得好用支持下作者！[github](https://www.mdeditor.com/)：lin945\n" +
+                "##如果你觉得好用支持下作者！[github](https://github.com/lin945/McPlugins)：lin945\n" +
                 "#### 服务器信息：\n");
         Date date = new Date();
        long between=System.currentTimeMillis()-Nukkit.START_TIME;
@@ -64,13 +64,11 @@ public class ServerPost extends PluginTask<PluginMain> {
         data.append("\n");
         data.append("* 服务器op："+PluginMain.getPlugin().getServer().getOps().getAll()+"\n");
         data.append("* 服务器tps："+PluginMain.getPlugin().getServer().getTicksPerSecondAverage());
-
     }
 
     public int send(StringBuffer data) {
         try {
             PluginMain.getPlugin().getLogger().info("Server酱推送开始");
-            PluginMain.getPlugin().getLogger().info(data.toString());
             String key=PluginMain.getPlugin().getConfig().getString("key","erro");
             if(key.equals("keys")|key.equals("erro")|key.isEmpty()){
                 PluginMain.getPlugin().getLogger().alert("Server酱key设置错误请检查配置");
